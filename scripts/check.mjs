@@ -180,45 +180,6 @@ async function resolveClash() {
 }
 
 /**
- * only Windows
- * get the wintun.dll (not required)
- */
-async function resolveWintun() {
-  const { platform } = process;
-
-  if (platform !== "win32") return;
-
-  const url = "https://www.wintun.net/builds/wintun-0.14.1.zip";
-
-  const tempDir = path.join(TEMP_DIR, "wintun");
-  const tempZip = path.join(tempDir, "wintun.zip");
-
-  const wintunPath = path.join(tempDir, "wintun/bin/amd64/wintun.dll");
-  const targetPath = path.join(cwd, "src-tauri/resources", "wintun.dll");
-
-  if (!FORCE && (await fs.pathExists(targetPath))) return;
-
-  await fs.mkdirp(tempDir);
-
-  if (!(await fs.pathExists(tempZip))) {
-    await downloadFile(url, tempZip);
-  }
-
-  // unzip
-  const zip = new AdmZip(tempZip);
-  zip.extractAllTo(tempDir, true);
-
-  if (!(await fs.pathExists(wintunPath))) {
-    throw new Error(`path not found "${wintunPath}"`);
-  }
-
-  await fs.rename(wintunPath, targetPath);
-  await fs.remove(tempDir);
-
-  console.log(`[INFO]: resolve wintun.dll finished`);
-}
-
-/**
  * download the file to the resources dir
  */
 async function resolveResource(binInfo) {
@@ -286,7 +247,7 @@ const resolveUninstall = () =>
 const resolveMmdb = () =>
   resolveResource({
     file: "Country.mmdb",
-    downloadURL: `https://github.com/Dreamacro/maxmind-geoip/releases/download/20230812/Country.mmdb`,
+    downloadURL: `https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/country.mmdb`,
   });
 const resolveGeosite = () =>
   resolveResource({
@@ -300,9 +261,9 @@ const resolveGeoIP = () =>
   });
 
 const tasks = [
-  { name: "clash", func: () => resolveSidecar(clashS3()), retry: 5 },
+  // { name: "clash", func: () => resolveSidecar(clashS3()), retry: 5 },
   { name: "clash-meta", func: () => resolveSidecar(clashMeta()), retry: 5 },
-  { name: "wintun", func: resolveWintun, retry: 5, winOnly: true },
+  // { name: "wintun", func: resolveWintun, retry: 5, winOnly: true },
   { name: "service", func: resolveService, retry: 5, winOnly: true },
   { name: "install", func: resolveInstall, retry: 5, winOnly: true },
   { name: "uninstall", func: resolveUninstall, retry: 5, winOnly: true },

@@ -16,7 +16,7 @@ jobs:
       matrix:
         os: [windows-latest, ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
-    if: startsWith(github.repository, 'zzzgydi')
+    if: startsWith(github.repository, 'MetaCubeX')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -60,12 +60,13 @@ jobs:
           releaseBody: "More new features are now supported."
           releaseDraft: false
           prerelease: true
+          args: -f default-meta
 
       - name: Portable Bundle
         if: startsWith(matrix.os, 'windows-')
         # rebuild with env settings
         run: |
-          yarn build
+          yarn build -f default-meta
           yarn run portable
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -77,7 +78,7 @@ jobs:
     needs: release
     runs-on: ubuntu-latest
     if: |
-      startsWith(github.repository, 'zzzgydi') &&
+      startsWith(github.repository, 'MetaCubeX') &&
       startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Checkout repository
