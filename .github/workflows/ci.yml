@@ -13,8 +13,18 @@ env:
 jobs:
   release:
     strategy:
+      fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        include:
+          - os: windows-latest
+            portable: false
+          - os: windows-latest
+            portable: true
+          - os: ubuntu-latest
+            portable: false
+          - os: macos-latest
+            portable: false
+
     runs-on: ${{ matrix.os }}
     if: startsWith(github.repository, 'zzzgydi')
     steps:
@@ -50,6 +60,7 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         # enable cache even though failed
         # continue-on-error: true
+        if: matrix.portable == false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
@@ -62,10 +73,10 @@ jobs:
           prerelease: true
 
       - name: Portable Bundle
-        if: startsWith(matrix.os, 'windows-')
-        # rebuild with env settings
+        if: matrix.portable == true
         run: |
-          yarn build
+          yarn install --network-timeout 1000000 --frozen-lockfile
+          yarn build -f default-meta
           yarn run portable
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -74,7 +85,7 @@ jobs:
           VITE_WIN_PORTABLE: 1
 
   release-update:
-    needs: release
+    needs: [release]
     runs-on: ubuntu-latest
     if: |
       startsWith(github.repository, 'zzzgydi') &&
