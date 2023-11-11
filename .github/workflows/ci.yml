@@ -26,7 +26,7 @@ jobs:
             portable: false
 
     runs-on: ${{ matrix.os }}
-    if: startsWith(github.repository, 'zzzgydi')
+    if: startsWith(github.repository, 'MetaCubeX')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -71,6 +71,7 @@ jobs:
           releaseBody: "More new features are now supported."
           releaseDraft: false
           prerelease: true
+          args: -f default-meta
 
       - name: Portable Bundle
         if: matrix.portable == true
@@ -88,7 +89,7 @@ jobs:
     needs: [release]
     runs-on: ubuntu-latest
     if: |
-      startsWith(github.repository, 'zzzgydi') &&
+      startsWith(github.repository, 'MetaCubeX') &&
       startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Checkout repository
