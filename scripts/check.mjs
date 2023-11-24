@@ -14,20 +14,6 @@ const SIDECAR_HOST = execSync("rustc -vV")
   .toString()
   .match(/(?<=host: ).+(?=\s*)/g)[0];
 
-/* ======= clash ======= */
-const CLASH_STORAGE_PREFIX = "https://release.dreamacro.workers.dev/";
-const CLASH_URL_PREFIX =
-  "https://github.com/Dreamacro/clash/releases/download/premium/";
-const CLASH_LATEST_DATE = "latest";
-
-const CLASH_MAP = {
-  "win32-x64": "clash-windows-amd64",
-  "darwin-x64": "clash-darwin-amd64",
-  "darwin-arm64": "clash-darwin-arm64",
-  "linux-x64": "clash-linux-amd64",
-  "linux-arm64": "clash-linux-arm64",
-};
-
 /* ======= clash meta ======= */
 const META_URL_PREFIX = `https://github.com/MetaCubeX/Clash.Meta/releases/download/`;
 const META_VERSION = "v1.16.0";
@@ -45,47 +31,9 @@ const META_MAP = {
  */
 
 const { platform, arch } = process;
-if (!CLASH_MAP[`${platform}-${arch}`]) {
-  throw new Error(`clash unsupported platform "${platform}-${arch}"`);
-}
+
 if (!META_MAP[`${platform}-${arch}`]) {
   throw new Error(`clash meta unsupported platform "${platform}-${arch}"`);
-}
-
-function clash() {
-  const name = CLASH_MAP[`${platform}-${arch}`];
-
-  const isWin = platform === "win32";
-  const urlExt = isWin ? "zip" : "gz";
-  const downloadURL = `${CLASH_URL_PREFIX}${name}-${CLASH_LATEST_DATE}.${urlExt}`;
-  const exeFile = `${name}${isWin ? ".exe" : ""}`;
-  const zipFile = `${name}.${urlExt}`;
-
-  return {
-    name: "clash",
-    targetFile: `clash-${SIDECAR_HOST}${isWin ? ".exe" : ""}`,
-    exeFile,
-    zipFile,
-    downloadURL,
-  };
-}
-
-function clashS3() {
-  const name = CLASH_MAP[`${platform}-${arch}`];
-
-  const isWin = platform === "win32";
-  const urlExt = isWin ? "zip" : "gz";
-  const downloadURL = `${CLASH_STORAGE_PREFIX}${CLASH_LATEST_DATE}/${name}-${CLASH_LATEST_DATE}.${urlExt}`;
-  const exeFile = `${name}${isWin ? ".exe" : ""}`;
-  const zipFile = `${name}.${urlExt}`;
-
-  return {
-    name: "clash",
-    targetFile: `clash-${SIDECAR_HOST}${isWin ? ".exe" : ""}`,
-    exeFile,
-    zipFile,
-    downloadURL,
-  };
 }
 
 function clashMeta() {
@@ -163,19 +111,6 @@ async function resolveSidecar(binInfo) {
   } finally {
     // delete temp dir
     await fs.remove(tempDir);
-  }
-}
-
-/**
- * prepare clash core
- * if the core version is not updated in time, use S3 storage as a backup.
- */
-async function resolveClash() {
-  try {
-    return await resolveSidecar(clash());
-  } catch {
-    console.log(`[WARN]: clash core needs to be updated`);
-    return await resolveSidecar(clashS3());
   }
 }
 
