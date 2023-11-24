@@ -5,6 +5,12 @@ on:
   push:
     tags:
       - v**
+    branches:
+      - main
+      
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
 
 env:
   CARGO_INCREMENTAL: 0
