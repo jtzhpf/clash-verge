@@ -7,7 +7,7 @@ on:
       - v**
     branches:
       - main
-      
+
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
@@ -23,13 +23,10 @@ jobs:
       matrix:
         include:
           - os: windows-latest
-            portable: false
+            option: portable
           - os: windows-latest
-            portable: true
           - os: ubuntu-latest
-            portable: false
           - os: macos-latest
-            portable: false
 
     runs-on: ${{ matrix.os }}
     if: startsWith(github.repository, 'MetaCubeX')
@@ -66,7 +63,6 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         # enable cache even though failed
         # continue-on-error: true
-        if: matrix.portable == false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
@@ -80,7 +76,7 @@ jobs:
           args: -f default-meta
 
       - name: Portable Bundle
-        if: matrix.portable == true
+        if: matrix.option == 'portable'
         run: |
           yarn install --network-timeout 1000000 --frozen-lockfile
           yarn build -f default-meta
@@ -94,9 +90,7 @@ jobs:
   release-update:
     needs: [release]
     runs-on: ubuntu-latest
-    if: |
-      startsWith(github.repository, 'MetaCubeX') &&
-      startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
