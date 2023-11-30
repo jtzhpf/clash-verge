@@ -316,7 +316,7 @@
 ### Features
 
 - save some states such as URL test, filter, etc
-- update clash core and clash-meta core
+- update clash core and mihomo core
 - new icon for macOS
 
 ---

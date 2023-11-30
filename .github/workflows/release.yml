@@ -61,6 +61,7 @@ jobs:
 
       - name: Tauri build
         uses: tauri-apps/tauri-action@v0
+        if: matrix.option != 'portable'
         # enable cache even though failed
         # continue-on-error: true
         env:

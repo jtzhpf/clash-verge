@@ -18,7 +18,7 @@ async function resolvePortable() {
   const zip = new AdmZip();
 
   zip.addLocalFile(path.join(releaseDir, "Clash Verge.exe"));
-  zip.addLocalFile(path.join(releaseDir, "clash-meta.exe"));
+  zip.addLocalFile(path.join(releaseDir, "mihomo.exe"));
   zip.addLocalFolder(path.join(releaseDir, "resources"), "resources");
 
   const require = createRequire(import.meta.url);

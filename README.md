@@ -14,7 +14,7 @@ A <a href="https://github.com/Dreamacro/clash">Clash</a> GUI based on <a href="h
 - Full `clash` config supported, Partial `clash premium` config supported.
 - Profiles management and enhancement (by yaml and Javascript). [Doc](https://github.com/MetaCubeX/clash-verge/wiki/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97)
 - Simple UI and supports custom theme color.
-- Built-in support [Clash.Meta](https://github.com/MetaCubeX/Clash.Meta) core.
+- Built-in support [mihomo](https://github.com/MetaCubeX/mihomo) core.
 - System proxy setting and guard.
 
 ## Install
@@ -110,7 +110,7 @@ Clash Verge was based on or inspired by these projects and so on:
 
 - [tauri-apps/tauri](https://github.com/tauri-apps/tauri): Build smaller, faster, and more secure desktop applications with a web frontend.
 - [Dreamacro/clash](https://github.com/Dreamacro/clash): A rule-based tunnel in Go.
-- [MetaCubeX/Clash.Meta](https://github.com/MetaCubeX/Clash.Meta): A rule-based tunnel in Go.
+- [MetaCubeX/mihomo](https://github.com/MetaCubeX/mihomo): A rule-based tunnel in Go.
 - [Fndroid/clash_for_windows_pkg](https://github.com/Fndroid/clash_for_windows_pkg): A Windows/macOS GUI based on Clash.
 - [vitejs/vite](https://github.com/vitejs/vite): Next generation frontend tooling. It's fast!
 
