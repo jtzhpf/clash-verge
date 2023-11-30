@@ -123,7 +123,7 @@ impl IVerge {
         Self {
             clash_core: match cfg!(feature = "default-meta") {
                 false => Some("clash".into()),
-                true => Some("clash-meta".into()),
+                true => Some("mihomo".into()),
             },
             language: match cfg!(feature = "default-meta") {
                 false => Some("en".into()),

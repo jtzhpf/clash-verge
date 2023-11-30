@@ -1,7 +1,7 @@
 {
   "package": {
     "productName": "Clash Verge",
-    "version": "1.3.8"
+    "version": "1.3.9-alpha"
   },
   "build": {
     "distDir": "../dist",
@@ -26,7 +26,7 @@
         "icons/icon.ico"
       ],
       "resources": ["resources"],
-      "externalBin": ["sidecar/clash-meta"],
+      "externalBin": ["sidecar/mihomo"],
       "copyright": "© 2023 MetaCubeX All Rights Reserved",
       "category": "DeveloperTool",
       "shortDescription": "A Clash GUI based on tauri.",

@@ -80,7 +80,7 @@ impl ChainSupport {
             Some(core) => match (self, core.as_str()) {
                 (ChainSupport::All, _) => true,
                 (ChainSupport::Clash, "clash") => true,
-                (ChainSupport::ClashMeta, "clash-meta") => true,
+                (ChainSupport::ClashMeta, "mihomo") => true,
                 _ => false,
             },
             None => true,

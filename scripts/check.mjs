@@ -5,6 +5,8 @@ import AdmZip from "adm-zip";
 import fetch from "node-fetch";
 import proxyAgent from "https-proxy-agent";
 import { execSync } from "child_process";
+import axios from "axios";
+import { log } from "console";
 
 const cwd = process.cwd();
 const TEMP_DIR = path.join(cwd, "node_modules/.verge");
@@ -15,38 +17,60 @@ const SIDECAR_HOST = execSync("rustc -vV")
   .match(/(?<=host: ).+(?=\s*)/g)[0];
 
 /* ======= clash meta ======= */
-const META_URL_PREFIX = `https://github.com/MetaCubeX/Clash.Meta/releases/download/`;
-const META_VERSION = "v1.16.0";
+const VERSION_URL =
+  "https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha/version.txt";
+const META_URL_PREFIX = `https://github.com/MetaCubeX/mihomo/releases/download/Prerelease-Alpha`;
+let META_VERSION;
 
 const META_MAP = {
-  "win32-x64": "clash.meta-windows-amd64-compatible",
-  "darwin-x64": "clash.meta-darwin-amd64",
-  "darwin-arm64": "clash.meta-darwin-arm64",
-  "linux-x64": "clash.meta-linux-amd64-compatible",
-  "linux-arm64": "clash.meta-linux-arm64",
+  "win32-x64": "mihomo-windows-amd64-compatible",
+  "darwin-x64": "mihomo-darwin-amd64",
+  "darwin-arm64": "mihomo-darwin-arm64",
+  "linux-x64": "mihomo-linux-amd64-compatible",
+  "linux-arm64": "mihomo-linux-arm64",
 };
 
 /**
- * check available
+ * Fetch the latest release version from the version.txt file
  */
+async function getLatestVersion() {
+  try {
+    const response = await axios.get(VERSION_URL);
+    META_VERSION = response.data.trim(); // Trim to remove extra whitespaces
+    console.log(`Latest release version: ${META_VERSION}`);
+  } catch (error) {
+    console.error("Error fetching latest release version:", error.message);
+    process.exit(1);
+  }
+}
 
+/**
+ * Check available
+ */
 const { platform, arch } = process;
 
 if (!META_MAP[`${platform}-${arch}`]) {
   throw new Error(`clash meta unsupported platform "${platform}-${arch}"`);
 }
 
-function clashMeta() {
+function mihomo() {
   const name = META_MAP[`${platform}-${arch}`];
   const isWin = platform === "win32";
   const urlExt = isWin ? "zip" : "gz";
-  const downloadURL = `${META_URL_PREFIX}${META_VERSION}/${name}-${META_VERSION}.${urlExt}`;
+  const downloadURL = `${META_URL_PREFIX}/${name}-${META_VERSION}.${urlExt}`;
   const exeFile = `${name}${isWin ? ".exe" : ""}`;
   const zipFile = `${name}-${META_VERSION}.${urlExt}`;
 
+  console.log({
+    name: name,
+    targetFile: `mihomo-${SIDECAR_HOST}${isWin ? ".exe" : ""}`,
+    exeFile,
+    zipFile,
+    downloadURL,
+  });
   return {
-    name: "clash-meta",
-    targetFile: `clash-meta-${SIDECAR_HOST}${isWin ? ".exe" : ""}`,
+    name: name,
+    targetFile: `mihomo-${SIDECAR_HOST}${isWin ? ".exe" : ""}`,
     exeFile,
     zipFile,
     downloadURL,
@@ -196,15 +220,17 @@ const resolveGeoIP = () =>
   });
 
 const tasks = [
-  // { name: "clash", func: () => resolveSidecar(clashS3()), retry: 5 },
-  { name: "clash-meta", func: () => resolveSidecar(clashMeta()), retry: 5 },
-  // { name: "wintun", func: resolveWintun, retry: 5, winOnly: true },
-  { name: "service", func: resolveService, retry: 5, winOnly: true },
-  { name: "install", func: resolveInstall, retry: 5, winOnly: true },
-  { name: "uninstall", func: resolveUninstall, retry: 5, winOnly: true },
-  { name: "mmdb", func: resolveMmdb, retry: 5 },
-  { name: "geosite", func: resolveGeosite, retry: 5 },
-  { name: "geoip", func: resolveGeoIP, retry: 5 },
+  {
+    name: "mihomo",
+    func: () => getLatestVersion().then(() => resolveSidecar(mihomo())),
+    retry: 3,
+  },
+  { name: "service", func: resolveService, retry: 3, winOnly: true },
+  { name: "install", func: resolveInstall, retry: 3, winOnly: true },
+  { name: "uninstall", func: resolveUninstall, retry: 3, winOnly: true },
+  { name: "mmdb", func: resolveMmdb, retry: 3 },
+  { name: "geosite", func: resolveGeosite, retry: 3 },
+  { name: "geoip", func: resolveGeoIP, retry: 3 },
 ];
 
 async function runTask() {
