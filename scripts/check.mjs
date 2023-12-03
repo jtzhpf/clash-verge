@@ -12,9 +12,18 @@ const cwd = process.cwd();
 const TEMP_DIR = path.join(cwd, "node_modules/.verge");
 const FORCE = process.argv.includes("--force");
 
-const SIDECAR_HOST = execSync("rustc -vV")
+let SIDECAR_HOST = execSync("rustc -vV")
   .toString()
   .match(/(?<=host: ).+(?=\s*)/g)[0];
+
+if (process.platform == "darwin" && process.env.npm_config_arch) {
+  if (process.env.npm_config_arch == "arm64") {
+    SIDECAR_HOST = "aarch64-apple-darwin";
+  }
+  if (process.env.npm_config_arch == "x64") {
+    SIDECAR_HOST = "x86_64-apple-darwin";
+  }
+}
 
 /* ======= clash meta ======= */
 const VERSION_URL =
@@ -47,7 +56,8 @@ async function getLatestVersion() {
 /**
  * Check available
  */
-const { platform, arch } = process;
+const platform = process.platform;
+const arch = process.env.npm_config_arch || process.arch;
 
 if (!META_MAP[`${platform}-${arch}`]) {
   throw new Error(`clash meta unsupported platform "${platform}-${arch}"`);
