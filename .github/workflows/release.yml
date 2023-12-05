@@ -31,7 +31,6 @@ jobs:
             os: windows-latest
             arch: x86_64
             target: x86_64-pc-windows-msvc
-            option: portable
           - build: linux
             os: ubuntu-latest
             arch: x86_64
