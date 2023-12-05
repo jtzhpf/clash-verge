@@ -21,9 +21,9 @@ A <a href="https://github.com/Dreamacro/clash">Clash</a> GUI based on <a href="h
 
 Download from [release](https://github.com/MetaCubeX/clash-verge/releases). Supports Windows x64, Linux x86_64 and macOS 11+
 
-- [Windows x64](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.9/clash-verge_1.3.9_x64_en-US.msi)
-- [macOS intel](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.9/clash-verge_1.3.9_x64.dmg)
-- [macOS arm](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.9/clash-verge_1.3.9_aarch64.dmg)
+- [Windows x64](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.9/Clash.Verge_1.3.9_x64_en-US.msi)
+- [macOS intel](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.9/Clash.Verge_1.3.9_x64.dmg)
+- [macOS arm](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.9/Clash.Verge_1.3.9_aarch64.dmg)
 - [Linux AppImage](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.9/clash-verge_1.3.9_amd64.AppImage)
 - [Linux deb](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.9/clash-verge_1.3.9_amd64.deb)
 - [Fedora Linux](https://github.com/zzzgydi/clash-verge/issues/352)
