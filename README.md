@@ -12,7 +12,7 @@ A <a href="https://github.com/Dreamacro/clash">Clash</a> GUI based on <a href="h
 ## Features
 
 - Full `clash` config supported, Partial `clash premium` config supported.
-- Profiles management and enhancement (by yaml and Javascript). [Doc](https://github.com/MetaCubeX/clash-verge/wiki/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97)
+- Profiles management and enhancement (by yaml and Javascript). [Doc](https://github.com/zzzgydi/clash-verge/wiki/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97)
 - Simple UI and supports custom theme color.
 - Built-in support [mihomo](https://github.com/MetaCubeX/mihomo) core.
 - System proxy setting and guard.
@@ -21,12 +21,12 @@ A <a href="https://github.com/Dreamacro/clash">Clash</a> GUI based on <a href="h
 
 Download from [release](https://github.com/MetaCubeX/clash-verge/releases). Supports Windows x64, Linux x86_64 and macOS 11+
 
-- [Windows x64](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.8/Clash.Verge_1.3.8_x64_en-US.msi)
-- [macOS intel](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.8/Clash.Verge_1.3.8_x64.dmg)
-- [macOS arm](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.8/Clash.Verge_1.3.8_aarch64.dmg)
-- [Linux AppImage](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.8/clash-verge_1.3.8_amd64.AppImage)
-- [Linux deb](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.8/clash-verge_1.3.8_amd64.deb)
-- [Fedora Linux](https://github.com/MetaCubeX/clash-verge/issues/352)
+- [Windows x64](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.9/clash-verge_1.3.9_x64_en-US.msi)
+- [macOS intel](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.9/clash-verge_1.3.9_x64.dmg)
+- [macOS arm](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.9/clash-verge_1.3.9_aarch64.dmg)
+- [Linux AppImage](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.9/clash-verge_1.3.9_amd64.AppImage)
+- [Linux deb](https://github.com/MetaCubeX/clash-verge/releases/download/v1.3.9/clash-verge_1.3.9_amd64.deb)
+- [Fedora Linux](https://github.com/zzzgydi/clash-verge/issues/352)
 
 Or you can build it yourself. Supports Windows, Linux and macOS 10.15+
 
@@ -37,6 +37,23 @@ Notes: If you could not start the app on Windows, please check that you have [We
 #### 1. **macOS** "Clash Verge" is damaged and can't be opened
 
 open the terminal and run `sudo xattr -r -d com.apple.quarantine /Applications/Clash\ Verge.app`
+
+#### 2. **macOS** `Tun Mode` not work
+
+change core permissions:
+```shell
+sudo chown root:admin /Applications/Clash\ Verge.app/Contents/MacOS/mihomo
+sudo chmod +sx /Applications/Clash\ Verge.app/Contents/MacOS/mihomo
+```
+
+due to the core cannot redirect dns automatically, you may need to manually set dns server with:
+
+```shell
+# set to Tun Mode built-in dns
+networksetup -setdnsservers Wi-Fi 198.18.0.2
+# restore to default dhcp dns
+networksetup -setdnsservers Wi-Fi "Empty"
+```
 
 ## Development
 
