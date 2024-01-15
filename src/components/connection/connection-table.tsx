@@ -18,7 +18,20 @@ export const ConnectionTable = (props: Props) => {
   >({});
 
   const columns: GridColDef[] = [
+    {
+      field: "time",
+      headerName: "Time",
+      flex: 120,
+      minWidth: 100,
+      align: "right",
+      headerAlign: "right",
+      sortComparator: sortStringTime,
+    },
+    { field: "type", headerName: "Type", flex: 160, minWidth: 100 },
+    { field: "process", headerName: "Process", flex: 240, minWidth: 120 },
     { field: "host", headerName: "Host", flex: 220, minWidth: 220 },
+    { field: "chains", headerName: "Chains", flex: 360, minWidth: 240 },
+    { field: "rule", headerName: "Rule", flex: 250, minWidth: 200 },
     {
       field: "download",
       headerName: "Download",
@@ -51,18 +64,6 @@ export const ConnectionTable = (props: Props) => {
       headerAlign: "right",
       sortComparator: sortWithUnit,
     },
-    { field: "chains", headerName: "Chains", flex: 360, minWidth: 360 },
-    { field: "rule", headerName: "Rule", flex: 300, minWidth: 250 },
-    { field: "process", headerName: "Process", flex: 480, minWidth: 480 },
-    {
-      field: "time",
-      headerName: "Time",
-      flex: 120,
-      minWidth: 100,
-      align: "right",
-      headerAlign: "right",
-      sortComparator: sortStringTime,
-    },
     { field: "source", headerName: "Source", flex: 200, minWidth: 130 },
     {
       field: "destinationIP",
@@ -70,13 +71,15 @@ export const ConnectionTable = (props: Props) => {
       flex: 200,
       minWidth: 130,
     },
-    { field: "type", headerName: "Type", flex: 160, minWidth: 100 },
   ];
 
   const connRows = useMemo(() => {
     return connections.map((each) => {
       const { metadata, rulePayload } = each;
-      const chains = [...each.chains].reverse().join(" / ");
+      const chains =
+        each.chains.length > 1
+          ? [each.chains[each.chains.length - 1], each.chains[0]].join(" > ")
+          : each.chains[0];
       const rule = rulePayload ? `${each.rule}(${rulePayload})` : each.rule;
       return {
         id: each.id,
