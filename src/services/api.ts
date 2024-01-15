@@ -78,7 +78,7 @@ export const getRules = async () => {
 export const getProxyDelay = async (name: string, url?: string) => {
   const params = {
     timeout: 10000,
-    url: url || "http://1.1.1.1",
+    url: url || "https://www.gstatic.com/generate_204",
   };
   const instance = await getAxios();
   const result = await instance.get(
