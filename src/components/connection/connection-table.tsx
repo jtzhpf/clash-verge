@@ -64,7 +64,7 @@ export const ConnectionTable = (props: Props) => {
       headerAlign: "right",
       sortComparator: sortWithUnit,
     },
-    { field: "source", headerName: "Source", flex: 200, minWidth: 130 },
+    { field: "source", headerName: "Source IP", flex: 200, minWidth: 130 },
     {
       field: "destinationIP",
       headerName: "Destination IP",
@@ -95,7 +95,7 @@ export const ConnectionTable = (props: Props) => {
         process: truncateStr(metadata.process || metadata.processPath),
         time: dayjs(each.start).fromNow(),
         source: `${metadata.sourceIP}:${metadata.sourcePort}`,
-        destinationIP: metadata.destinationIP,
+        destinationIP: metadata.remoteDestination ?? metadata.destinationIP,
         type: `${metadata.type}(${metadata.network})`,
 
         connectionData: each,
